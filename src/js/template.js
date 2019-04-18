@@ -1,14 +1,15 @@
-window.onload = function() {
-   var canvas = document.getElementById('canvas'),
-      context = canvas.getContext('2d'),
-      width = (canvas.width = window.innerWidth),
-      height = (canvas.height = window.innerHeight);
+function update(context, width, height) {
+   context.clearRect(0, 0, width, height);
 
-   update();
+   requestAnimationFrame(update);
+}
 
-   function update() {
-      context.clearRect(0, 0, width, height);
+window.onload = function onload() {
+   const canvas = document.getElementById('canvas');
+   const context = canvas.getContext('2d');
+   canvas.width = window.innerWidth;
+   canvas.height = window.innerHeight;
+   const { width, height } = canvas;
 
-      requestAnimationFrame(update);
-   }
+   update(context, width, height);
 };

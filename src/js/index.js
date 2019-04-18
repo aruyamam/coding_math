@@ -1,1 +1,1 @@
-import './edge_handling/bounce';
+import './clamp/main';
