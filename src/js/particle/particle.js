@@ -7,6 +7,7 @@ const particle = {
    mass: 1,
    radius: 0,
    bounce: -1,
+   friction: 1,
 
    create(x, y, speed, direction, grav) {
       const obj = Object.create(this);
@@ -24,6 +25,7 @@ const particle = {
    },
 
    update() {
+      this.velocity.multiplyBy(this.friction);
       this.velocity.addTo(this.gravity);
       this.position.addTo(this.velocity);
    },

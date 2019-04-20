@@ -1,1 +1,1 @@
-import './clamp/main';
+import './acceleration/ship2';
