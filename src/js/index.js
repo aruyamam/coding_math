@@ -1,1 +1,1 @@
-import './acceleration/ship2';
+import './distance/main';
