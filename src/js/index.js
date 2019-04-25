@@ -1,1 +1,1 @@
-import './ballisitics/main';
+import './collision_detection/rect-rect';
