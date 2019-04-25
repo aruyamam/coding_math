@@ -1,1 +1,1 @@
-import './collision_detection/rect-rect';
+import './random/randomInt';
