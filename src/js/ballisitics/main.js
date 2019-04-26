@@ -13,12 +13,23 @@ window.onload = function onload() {
       angle: -Math.PI / 4,
    };
    const cannonball = particle.create(gun.x, gun.y, 15, gun.angle, 0.2);
-   let canShoot = true;
+   let isShooting = false;
+   let forceAngle = 0;
+   const forceSpeed = 0.1;
+   let rawForce = 0;
 
    cannonball.radius = 7;
 
    function draw() {
       context.clearRect(0, 0, width, height);
+
+      context.fillStyle = '#ccc';
+      context.fillRect(10, height - 10, 20, -100);
+
+      context.fillStyle = '#666';
+      context.fillRect(10, height - 10, 20, utils.map(rawForce, -1, 1, 0, -100));
+
+      context.fillStyle = '#000';
 
       context.beginPath();
       context.arc(gun.x, gun.y, 24, 0, Math.PI * 2, false);
@@ -42,11 +53,8 @@ window.onload = function onload() {
       context.fill();
    }
 
-   draw();
-
    function aimGun(mouseX, mouseY) {
       gun.angle = utils.clamp(Math.atan2(mouseY - gun.y, mouseX - gun.x), -Math.PI / 2, -0.3);
-      draw();
    }
 
    function onMouseMove(event) {
@@ -66,33 +74,38 @@ window.onload = function onload() {
    }
 
    function update() {
-      cannonball.update();
+      if (!isShooting) {
+         forceAngle += forceSpeed;
+      }
+      rawForce = Math.sin(forceAngle);
+      if (isShooting) {
+         cannonball.update();
+      }
       draw();
 
       if (cannonball.position.getY() > height) {
-         canShoot = true;
+         isShooting = false;
       }
-      else {
-         requestAnimationFrame(update);
-      }
+      requestAnimationFrame(update);
    }
 
    function shoot() {
       cannonball.position.setX(gun.x + Math.cos(gun.angle) * 40);
       cannonball.position.setY(gun.y + Math.sin(gun.angle) * 40);
-      cannonball.velocity.setLength(15);
+      cannonball.velocity.setLength(utils.map(rawForce, -1, 1, 2, 20));
       cannonball.velocity.setAngle(gun.angle);
 
-      canShoot = false;
-      update();
+      isShooting = true;
    }
+
+   update();
 
    document.body.addEventListener('mousedown', onMouseDown);
 
-   document.body.addEventListener('keyup', (event) => {
+   document.body.addEventListener('keydown', (event) => {
       switch (event.keyCode) {
          case 32: // space
-            if (canShoot) {
+            if (!isShooting) {
                shoot();
             }
             break;

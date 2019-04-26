@@ -1,1 +1,1 @@
-import './random/randomInt';
+import './ballisitics/main';
