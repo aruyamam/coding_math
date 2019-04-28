@@ -33,6 +33,14 @@ function rectIntersect(r0, r1) {
    );
 }
 
+function degreeToRads(degree) {
+   return (degree / 180) * Math.PI;
+}
+
+function radsToDegree(radians) {
+   return (radians * 180) / Math.PI;
+}
+
 export default {
    norm,
    lerp,
@@ -46,4 +54,6 @@ export default {
    inRange,
    rangeIntersect,
    rectIntersect,
+   degreeToRads,
+   radsToDegree,
 };

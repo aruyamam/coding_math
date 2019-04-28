@@ -1,1 +1,1 @@
-import './springs/spring1';
+import './degree-radians/main';

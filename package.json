@@ -1,5 +1,6 @@
 {
    "name": "coding_math",
+   "author": "Keith Peters",
    "version": "0.0.1",
    "main": "index.js",
    "scripts": {
