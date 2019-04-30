@@ -13,8 +13,10 @@ window.onload = function onload() {
       Math.random() * height,
       50,
       Math.random() * Math.PI * 2,
+      0.5,
    );
    const k = 0.1 + Math.random() * 0.5;
+   const springLength = 100;
 
    weight.radius = 20;
    weight.friction = 0.5 + Math.random() * 0.5;
@@ -28,6 +30,7 @@ window.onload = function onload() {
       context.clearRect(0, 0, width, height);
 
       const distance = springPoint.subtract(weight.position);
+      distance.setLength(distance.getLength() - springLength);
       const springForce = distance.multiply(k);
 
       weight.velocity.addTo(springForce);

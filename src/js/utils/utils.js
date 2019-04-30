@@ -41,6 +41,10 @@ function radsToDegree(radians) {
    return (radians * 180) / Math.PI;
 }
 
+function randomRange(min, max) {
+   return min + Math.random() * (max - min);
+}
+
 export default {
    norm,
    lerp,
@@ -56,4 +60,5 @@ export default {
    rectIntersect,
    degreeToRads,
    radsToDegree,
+   randomRange,
 };
