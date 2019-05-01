@@ -1,57 +1,62 @@
 import vector from '../vector/vector';
 
 const particle = {
-   position: null,
-   velocity: null,
-   gravity: null,
+   x: 0,
+   y: 0,
+   vx: 0,
+   vy: 0,
    mass: 1,
    radius: 0,
    bounce: -1,
    friction: 1,
+   gravity: null,
 
    create(x, y, speed, direction, grav) {
       const obj = Object.create(this);
-      obj.position = vector.create(x, y);
-      obj.velocity = vector.create(0, 0);
-      obj.velocity.setLength(speed);
-      obj.velocity.setAngle(direction);
-      obj.gravity = vector.create(0, grav || 0);
+      obj.x = x;
+      obj.y = y;
+      obj.vx = Math.cos(direction) * speed;
+      obj.vy = Math.sin(direction) * speed;
+      obj.gravity = grav || 0;
 
       return obj;
    },
 
-   accelerate(accel) {
-      this.velocity.addTo(accel);
+   accelerate(ax, ay) {
+      this.vx += ax;
+      this.vy += ay;
    },
 
    update() {
-      this.velocity.multiplyBy(this.friction);
-      this.velocity.addTo(this.gravity);
-      this.position.addTo(this.velocity);
+      this.vx *= this.friction;
+      this.vy *= this.friction;
+      this.vy += this.gravity;
+      this.x += this.vx;
+      this.y += this.vy;
    },
 
    angleTo(p2) {
-      return Math.atan2(
-         p2.position.getY() - this.position.getY(),
-         p2.position.getX() - this.position.getX(),
-      );
+      return Math.atan2(p2.y - this.y, p2.x - this.x);
    },
 
    distanceTo(p2) {
-      const dx = p2.position.getX() - this.position.getX();
-      const dy = p2.position.getY() - this.position.getY();
+      const dx = p2.x - this.x;
+      const dy = p2.y - this.y;
 
       return Math.sqrt(dx * dx + dy * dy);
    },
 
    gravitateTo(p2) {
-      const grav = vector.create(0, 0);
-      const dist = this.distanceTo(p2);
+      const dx = p2.x - this.x;
+      const dy = p2.y - this.y;
+      const distSQ = dx * dx + dy * dy;
+      const dist = Math.sqrt(distSQ);
+      const force = p2.mass / distSQ;
+      const ax = (dx / dist) * force;
+      const ay = (dy / dist) * force;
 
-      grav.setLength(p2.mass / (dist * dist));
-      grav.setAngle(this.angleTo(p2));
-
-      this.velocity.addTo(grav);
+      this.vx += ax;
+      this.vy += ay;
    },
 };
 
