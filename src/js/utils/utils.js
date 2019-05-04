@@ -45,6 +45,16 @@ function randomRange(min, max) {
    return min + Math.random() * (max - min);
 }
 
+function roundToPlaces(value, places) {
+   const mult = Math.pow(10, places);
+
+   return Math.round(value * mult) / mult;
+}
+
+function roundNearest(value, nearest) {
+   return Math.round(value / nearest) * nearest;
+}
+
 export default {
    norm,
    lerp,
@@ -61,4 +71,6 @@ export default {
    degreeToRads,
    radsToDegree,
    randomRange,
+   roundToPlaces,
+   roundNearest,
 };
