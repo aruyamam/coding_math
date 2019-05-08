@@ -1,44 +1,35 @@
-window.onload = function() {
-   var canvas = document.getElementById('canvas'),
-      context = canvas.getContext('2d'),
-      width = (canvas.width = window.innerWidth),
-      height = (canvas.height = window.innerHeight),
-      particles = [],
-      numParticles = 100;
+import particle from '../particle/particle';
 
-   for (var i = 0; i < numParticles; i += 1) {
+window.onload = function onload() {
+   const canvas = document.getElementById('canvas');
+   const context = canvas.getContext('2d');
+   canvas.width = window.innerWidth;
+   canvas.height = window.innerHeight;
+   const { width, height } = canvas;
+   const particles = [];
+   const numParticles = 100;
+
+   for (let i = 0; i < numParticles; i += 1) {
       particles.push(
-         particle.create(
-            width / 2,
-            height / 2,
-            Math.random() * 4 + 1,
-            Math.random() * Math.PI * 2
-         )
+         particle.create(width / 2, height / 2, Math.random() * 4 + 1, Math.random() * Math.PI * 2),
       );
    }
-
-   update();
 
    function update() {
       context.clearRect(0, 0, width, height);
 
-      for (var i = 0; i < numParticles; i += 1) {
-         var p = particles[i];
+      for (let i = 0; i < numParticles; i += 1) {
+         const p = particles[i];
 
          p.update();
 
          context.beginPath();
-         context.arc(
-            p.position.getX(),
-            p.position.getY(),
-            10,
-            0,
-            Math.PI * 2,
-            false
-         );
+         context.arc(p.x, p.y, 10, 0, Math.PI * 2, false);
          context.fill();
       }
 
       requestAnimationFrame(update);
    }
+
+   update();
 };

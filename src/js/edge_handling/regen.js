@@ -29,14 +29,16 @@ window.onload = function onload() {
          p.update();
 
          context.beginPath();
-         context.arc(p.position.getX(), p.position.getY(), p.radius, 0, Math.PI * 2, false);
+         context.arc(p.x, p.y, p.radius, 0, Math.PI * 2, false);
          context.fill();
 
-         if (p.position.getY() - p.radius > height) {
-            p.position.setX(width / 2);
-            p.position.setY(height);
-            p.velocity.setLength(Math.random() * 8 + 5);
-            p.velocity.setAngle(-Math.PI / 2 + (Math.random() * 0.2 - 0.1));
+         if (p.y - p.radius > height) {
+            p.x = width / 2;
+            p.y = height;
+            const speed = Math.random() * 8 + 5;
+            const direction = -Math.PI / 2 + (Math.random() * 0.2 - 0.1);
+            p.vx = Math.cos(direction) * speed;
+            p.vy = Math.sin(direction) * speed;
          }
       }
 

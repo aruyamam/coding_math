@@ -14,9 +14,13 @@ window.onload = function onload() {
    };
    const cannonball = particle.create(gun.x, gun.y, 15, gun.angle, 0.2);
    let isShooting = false;
+   let isHitted = false;
    let forceAngle = 0;
    const forceSpeed = 0.1;
    let rawForce = 0;
+   const target = {};
+   const particles = [];
+   const numParitcles = 50;
 
    cannonball.radius = 7;
 
@@ -42,15 +46,29 @@ window.onload = function onload() {
       context.restore();
 
       context.beginPath();
-      context.arc(
-         cannonball.position.getX(),
-         cannonball.position.getY(),
-         cannonball.radius,
-         0,
-         Math.PI * 2,
-         false,
-      );
+      context.arc(cannonball.x, cannonball.y, cannonball.radius, 0, Math.PI * 2, false);
       context.fill();
+
+      context.fillStyle = 'red';
+
+      if (!isHitted) {
+         context.beginPath();
+         context.arc(target.x, target.y, target.radius, 0, Math.PI * 2, false);
+         context.fill();
+      }
+
+      if (isHitted) {
+         for (let i = 0; i < particles.length; i += 1) {
+            const p = particles[i];
+            // console.log(p);
+
+            p.update();
+
+            context.beginPath();
+            context.arc(p.x, p.y, 10, 0, Math.PI * 2, false);
+            context.fill();
+         }
+      }
    }
 
    function aimGun(mouseX, mouseY) {
@@ -73,6 +91,41 @@ window.onload = function onload() {
       aimGun(event.clientX, event.clientY);
    }
 
+   function removeDeadParticles() {
+      for (let i = particles.length - 1; i >= 0; i -= 1) {
+         const p = particles[i];
+         if (p.y - p.radius > height) {
+            particles.splice(i, 1);
+         }
+      }
+   }
+
+   function setTarget() {
+      target.x = utils.randomRange(200, width);
+      target.y = height;
+      target.radius = utils.randomRange(10, 40);
+   }
+
+   function setParticles() {
+      for (let i = 0; i < numParitcles; i += 1) {
+         particles.push(
+            particle.create(
+               target.x,
+               target.y,
+               Math.random() * 8 + 5,
+               -Math.PI / 2 + (Math.random() * 0.2 - 0.1),
+               0.1,
+            ),
+         );
+      }
+   }
+
+   function checkTarget() {
+      if (utils.circleCollision(target, cannonball)) {
+         isHitted = true;
+      }
+   }
+
    function update() {
       if (!isShooting) {
          forceAngle += forceSpeed;
@@ -80,24 +133,39 @@ window.onload = function onload() {
       rawForce = Math.sin(forceAngle);
       if (isShooting) {
          cannonball.update();
+         checkTarget();
       }
+
       draw();
 
-      if (cannonball.position.getY() > height) {
+      if (isHitted) {
+         removeDeadParticles();
+      }
+
+      if (isHitted && particles.length === 0) {
+         isHitted = false;
+         setTarget();
+         setParticles();
+      }
+
+      if (cannonball.y > height) {
          isShooting = false;
       }
       requestAnimationFrame(update);
    }
 
    function shoot() {
-      cannonball.position.setX(gun.x + Math.cos(gun.angle) * 40);
-      cannonball.position.setY(gun.y + Math.sin(gun.angle) * 40);
-      cannonball.velocity.setLength(utils.map(rawForce, -1, 1, 2, 20));
-      cannonball.velocity.setAngle(gun.angle);
+      const force = utils.map(rawForce, -1, 1, 2, 20);
+      cannonball.x = gun.x + Math.cos(gun.angle) * 40;
+      cannonball.y = gun.y + Math.sin(gun.angle) * 40;
+      cannonball.vx = Math.cos(gun.angle) * force;
+      cannonball.vy = Math.sin(gun.angle) * force;
 
       isShooting = true;
    }
 
+   setTarget();
+   setParticles();
    update();
 
    document.body.addEventListener('mousedown', onMouseDown);

@@ -1,5 +1,3 @@
-import vector from '../vector/vector';
-
 const particle = {
    x: 0,
    y: 0,
