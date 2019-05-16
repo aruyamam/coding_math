@@ -1,5 +1,5 @@
-import vector from '../vector/vector';
 import particle from '../particle/particle';
+import utils from '../utils/utils';
 
 window.onload = function onload() {
    const canvas = document.getElementById('canvas');
@@ -11,6 +11,10 @@ window.onload = function onload() {
       x: width / 2,
       y: height / 2,
    };
+   const springPoint2 = {
+      x: utils.randomRange(0, width),
+      y: utils.randomRange(0, height),
+   };
    const weight = particle.create(
       Math.random() * width,
       Math.random() * height,
@@ -18,11 +22,13 @@ window.onload = function onload() {
       Math.random() * Math.PI * 2,
       0.5,
    );
-   const k = 0.1 + Math.random() * 0.5;
+   const k = 0.1;
    const springLength = 100;
 
    weight.radius = 20;
-   weight.friction = 0.5 + Math.random() * 0.5;
+   weight.friction = 0.95;
+   weight.addSpring(springPoint, k, springLength);
+   weight.addSpring(springPoint2, k, springLength);
 
    document.body.addEventListener('mousemove', (event) => {
       springPoint.x = event.clientX;
@@ -31,16 +37,6 @@ window.onload = function onload() {
 
    function update() {
       context.clearRect(0, 0, width, height);
-
-      const dx = springPoint.x - weight.x;
-      const dy = springPoint.y - weight.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      const springForce = (distance - springLength) * k;
-      const ax = (dx / distance) * springForce;
-      const ay = (dy / distance) * springForce;
-
-      weight.vx += ax;
-      weight.vy += ay;
 
       weight.update();
 
@@ -53,7 +49,8 @@ window.onload = function onload() {
       context.fill();
 
       context.beginPath();
-      context.moveTo(weight.x, weight.y);
+      context.moveTo(springPoint2.x, springPoint2.y);
+      context.lineTo(weight.x, weight.y);
       context.lineTo(springPoint.x, springPoint.y);
       context.stroke();
 

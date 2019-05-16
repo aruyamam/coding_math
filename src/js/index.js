@@ -1,1 +1,1 @@
-import './ballisitics/main';
+import './gravity/mulltigravity';
