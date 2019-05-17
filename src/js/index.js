@@ -1,1 +1,1 @@
-import './gravity/mulltigravity';
+import './random_distribution/main3';

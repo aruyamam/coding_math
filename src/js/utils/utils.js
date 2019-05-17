@@ -55,6 +55,16 @@ function roundNearest(value, nearest) {
    return Math.round(value / nearest) * nearest;
 }
 
+function randomDist(min, max, iterations) {
+   let total = 0;
+
+   for (let i = 0; i < iterations; i += 1) {
+      total += randomRange(min, max);
+   }
+
+   return total / iterations;
+}
+
 export default {
    norm,
    lerp,
@@ -73,4 +83,5 @@ export default {
    randomRange,
    roundToPlaces,
    roundNearest,
+   randomDist,
 };
