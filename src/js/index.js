@@ -1,1 +1,1 @@
-import './random_distribution/main3';
+import './bezier_curves/main3';
