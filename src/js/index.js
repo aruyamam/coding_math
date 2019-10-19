@@ -1,1 +1,1 @@
-import './bitmap_collision_detection/main';
+import './3d/postcard_in_space/main2';
