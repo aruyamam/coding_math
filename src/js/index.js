@@ -1,1 +1,1 @@
-import './canvas_drag_and_drop/bezier';
+import './3d/carousel/postcards';
