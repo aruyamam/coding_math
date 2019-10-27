@@ -1,1 +1,1 @@
-import './3d/carousel/postcards';
+import './3d/carousel/star';

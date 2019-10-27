@@ -6,19 +6,21 @@ window.onload = function onload() {
    const { width, height } = canvas;
    const fl = 300;
    const cards = [];
-   const numCards = 7;
+   const numCards = 20;
    const centerZ = 1000;
+   let ypos = 0;
    const radius = 1000;
    let baseAngle = 0;
    let rotationSpeed = 0.01;
+   const star = document.createElement('img');
+
+   star.src = 'images/star.png';
 
    for (let i = 0; i < numCards; i += 1) {
       const card = {
-         y: 0,
          angle: ((Math.PI * 2) / numCards) * i,
-         img: this.document.createElement('img'),
+         img: document.createElement('img'),
       };
-      card.img.src = `images/postcard${i % 7}.jpg`;
       card.x = Math.cos(card.angle + baseAngle) * radius;
       card.z = centerZ + Math.sin(card.angle + baseAngle) * radius;
       cards.push(card);
@@ -27,8 +29,9 @@ window.onload = function onload() {
    context.translate(width / 2, height / 2);
    context.font = '200px Arial';
 
-   this.document.body.addEventListener('mousemove', (event) => {
+   this.document.body.addEventListener('mouseover', (event) => {
       rotationSpeed = (event.clientX - width / 2) * 0.00005;
+      ypos = (event.clientY - height / 2) * 2;
    });
 
    function zsort(cardA, cardB) {
@@ -45,17 +48,19 @@ window.onload = function onload() {
 
          context.save();
          context.scale(perspective, perspective);
-         context.translate(card.x, card.y);
+         context.translate(card.x, ypos);
 
          context.translate(-card.img.width / 2, -card.img.height / 2);
-         context.drawImage(card.img, 0, 0);
+         context.drawImage(star, 0, 0);
 
          context.restore();
 
          card.x = Math.cos(card.angle + baseAngle) * radius;
          card.z = centerZ + Math.sin(card.angle + baseAngle) * radius;
       }
+
       requestAnimationFrame(update);
    }
+
    update();
 };
