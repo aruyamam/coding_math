@@ -1,1 +1,1 @@
-import './3d/carousel/star';
+import './3d/points_and_lines/spiral';
