@@ -45,7 +45,7 @@ window.onload = function onload() {
          if (i === 0) {
             context.moveTo(0, 0);
          }
- else {
+         else {
             context.lineTo(0, 0);
          }
 
