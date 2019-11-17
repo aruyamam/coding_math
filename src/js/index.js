@@ -1,1 +1,1 @@
-import './2D_and_3D_Coordinate_Rotation/main';
+import './easing_and_tweening/main';
