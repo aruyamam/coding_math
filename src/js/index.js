@@ -1,1 +1,1 @@
-import './easing_and_tweening/main';
+import './more_on_easing/string';
