@@ -13,5 +13,5 @@ window.onload = function onload() {
       requestAnimationFrame(update);
    }
 
-   update(context, width, height);
+   update();
 };

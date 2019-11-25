@@ -1,1 +1,1 @@
-import './more_on_easing/string';
+import './tweeining/main';
