@@ -1,1 +1,1 @@
-import './tweeining/main';
+import './tweeining/tweenFull';
