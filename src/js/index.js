@@ -1,1 +1,1 @@
-import './line_intersections/main_interactive';
+import './line_intersections/particles';
